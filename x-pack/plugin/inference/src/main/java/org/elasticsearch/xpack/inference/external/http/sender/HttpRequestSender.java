@@ -52,7 +52,8 @@ public class HttpRequestSender implements Sender {
                 this.httpClientManager.getHttpClient(),
                 serviceComponents.throttlerManager(),
                 new RetrySettings(serviceComponents.settings(), clusterService),
-                serviceComponents.threadPool()
+                serviceComponents.threadPool(),
+                serviceComponents.tracer()
             );
         }
 

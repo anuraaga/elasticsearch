@@ -70,6 +70,10 @@ dependencies {
   implementation "com.amazonaws:jmespath-java:${versions.aws}"
   implementation "joda-time:joda-time:2.10.10"
   implementation 'javax.xml.bind:jaxb-api:2.2.2'
+
+  /** OpenTelemetry */
+  implementation "io.opentelemetry:opentelemetry-api:1.31.0"
+  implementation "io.opentelemetry.semconv:opentelemetry-semconv-incubating:1.27.0-alpha"
 }
 
 tasks.named("dependencyLicenses").configure {

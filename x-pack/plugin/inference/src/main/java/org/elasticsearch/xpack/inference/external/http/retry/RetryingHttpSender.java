@@ -16,6 +16,7 @@ import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.support.RetryableAction;
 import org.elasticsearch.inference.InferenceServiceResults;
 import org.elasticsearch.rest.RestStatus;
+import org.elasticsearch.telemetry.tracing.Tracer;
 import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.xpack.inference.common.SizeLimitInputStream;
 import org.elasticsearch.xpack.inference.external.http.HttpClient;
@@ -42,14 +43,16 @@ public class RetryingHttpSender implements RequestSender {
     private final RetrySettings retrySettings;
     private final ThreadPool threadPool;
     private final Executor executor;
+    private final Tracer tracer;
 
     public RetryingHttpSender(
         HttpClient httpClient,
         ThrottlerManager throttlerManager,
         RetrySettings retrySettings,
-        ThreadPool threadPool
+        ThreadPool threadPool,
+        Tracer tracer
     ) {
-        this(httpClient, throttlerManager, retrySettings, threadPool, threadPool.executor(UTILITY_THREAD_POOL_NAME));
+        this(httpClient, throttlerManager, retrySettings, threadPool, threadPool.executor(UTILITY_THREAD_POOL_NAME), tracer);
     }
 
     // For testing only
@@ -58,13 +61,15 @@ public class RetryingHttpSender implements RequestSender {
         ThrottlerManager throttlerManager,
         RetrySettings retrySettings,
         ThreadPool threadPool,
-        Executor executor
+        Executor executor,
+        Tracer tracer
     ) {
         this.httpClient = Objects.requireNonNull(httpClient);
         this.throttlerManager = Objects.requireNonNull(throttlerManager);
         this.retrySettings = Objects.requireNonNull(retrySettings);
         this.threadPool = Objects.requireNonNull(threadPool);
         this.executor = Objects.requireNonNull(executor);
+        this.tracer = Objects.requireNonNull(tracer);;
     }
 
     private class InternalRetrier extends RetryableAction<InferenceServiceResults> {
@@ -210,6 +215,11 @@ public class RetryingHttpSender implements RequestSender {
             listener
         );
         retrier.run();
+    }
+
+    @Override
+    public Tracer tracer() {
+        return tracer;
     }
 
     private void logException(Logger logger, Request request, String requestType, Exception exception) {

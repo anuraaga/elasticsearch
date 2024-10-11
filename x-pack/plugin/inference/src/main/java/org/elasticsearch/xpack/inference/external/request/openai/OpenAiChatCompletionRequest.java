@@ -12,6 +12,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ByteArrayEntity;
 import org.elasticsearch.common.Strings;
+import org.elasticsearch.inference.Model;
 import org.elasticsearch.xcontent.XContentType;
 import org.elasticsearch.xpack.inference.external.openai.OpenAiAccount;
 import org.elasticsearch.xpack.inference.external.request.HttpRequest;
@@ -88,6 +89,11 @@ public class OpenAiChatCompletionRequest implements OpenAiRequest {
     @Override
     public boolean isStreaming() {
         return stream;
+    }
+
+    @Override
+    public Model model2() {
+        return model;
     }
 
     public static URI buildDefaultUri() throws URISyntaxException {

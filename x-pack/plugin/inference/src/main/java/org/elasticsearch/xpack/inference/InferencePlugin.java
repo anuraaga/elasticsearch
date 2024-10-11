@@ -178,9 +178,11 @@ public class InferencePlugin extends Plugin implements ActionPlugin, ExtensibleP
 
     @Override
     public Collection<?> createComponents(PluginServices services) {
+        var tracer = services.telemetryProvider().getTracer();
+
         var throttlerManager = new ThrottlerManager(settings, services.threadPool(), services.clusterService());
         var truncator = new Truncator(settings, services.clusterService());
-        serviceComponents.set(new ServiceComponents(services.threadPool(), throttlerManager, settings, truncator));
+        serviceComponents.set(new ServiceComponents(services.threadPool(), throttlerManager, settings, truncator, tracer));
 
         var httpClientManager = HttpClientManager.create(settings, services.threadPool(), services.clusterService(), throttlerManager);
         var httpRequestSenderFactory = new HttpRequestSender.Factory(serviceComponents.get(), httpClientManager, services.clusterService());

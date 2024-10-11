@@ -17,6 +17,7 @@ import org.elasticsearch.core.Nullable;
 import org.elasticsearch.core.TimeValue;
 import org.elasticsearch.inference.InferenceServiceResults;
 import org.elasticsearch.rest.RestStatus;
+import org.elasticsearch.telemetry.tracing.Tracer;
 import org.elasticsearch.test.ESTestCase;
 import org.elasticsearch.test.http.MockRequest;
 import org.elasticsearch.test.http.MockResponse;
@@ -284,7 +285,7 @@ public class OpenAiChatCompletionActionTests extends ESTestCase {
 
     private ExecutableAction createAction(String url, String org, String apiKey, String modelName, @Nullable String user, Sender sender) {
         var model = createChatCompletionModel(url, org, apiKey, modelName, user);
-        var requestCreator = OpenAiCompletionRequestManager.of(model, threadPool);
+        var requestCreator = OpenAiCompletionRequestManager.of(model, threadPool, Tracer.NOOP);
         var errorMessage = constructFailedToSendRequestMessage(model.getServiceSettings().uri(), "OpenAI chat completions");
         return new SingleInputSenderExecutableAction(sender, requestCreator, errorMessage, "OpenAI chat completions");
     }

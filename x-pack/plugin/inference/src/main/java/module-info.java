@@ -27,6 +27,7 @@ module org.elasticsearch.inference {
     requires aws.java.sdk.core;
     requires com.fasterxml.jackson.databind;
     requires org.joda.time;
+    requires io.opentelemetry.semconv.incubating;
 
     exports org.elasticsearch.xpack.inference.action;
     exports org.elasticsearch.xpack.inference.registry;

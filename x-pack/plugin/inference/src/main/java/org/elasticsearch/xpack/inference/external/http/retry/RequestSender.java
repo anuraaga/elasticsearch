@@ -9,7 +9,10 @@ package org.elasticsearch.xpack.inference.external.http.retry;
 
 import org.apache.logging.log4j.Logger;
 import org.elasticsearch.action.ActionListener;
+import org.elasticsearch.core.Nullable;
 import org.elasticsearch.inference.InferenceServiceResults;
+import org.elasticsearch.telemetry.tracing.Tracer;
+import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.xpack.inference.external.request.Request;
 
 import java.util.function.Supplier;
@@ -22,4 +25,13 @@ public interface RequestSender {
         ResponseHandler responseHandler,
         ActionListener<InferenceServiceResults> listener
     );
+
+    default Tracer tracer() {
+        return Tracer.NOOP;
+    }
+
+    @Nullable
+    default ThreadPool threadPool() {
+        return null;
+    }
 }

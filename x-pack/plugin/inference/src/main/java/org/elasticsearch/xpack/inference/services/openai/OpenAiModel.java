@@ -22,6 +22,8 @@ import org.elasticsearch.xpack.inference.services.settings.ApiKeySecrets;
 import java.util.Map;
 import java.util.Objects;
 
+import io.opentelemetry.semconv.incubating.GenAiIncubatingAttributes.GenAiSystemValues;
+
 public abstract class OpenAiModel extends Model {
 
     private final OpenAiRateLimitServiceSettings rateLimitServiceSettings;
@@ -59,6 +61,11 @@ public abstract class OpenAiModel extends Model {
 
     public OpenAiRateLimitServiceSettings rateLimitServiceSettings() {
         return rateLimitServiceSettings;
+    }
+
+    @Override
+    public String genAiSystem() {
+        return GenAiSystemValues.OPENAI;
     }
 
     public abstract ExecutableAction accept(OpenAiActionVisitor creator, Map<String, Object> taskSettings);

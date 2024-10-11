@@ -99,6 +99,18 @@ public class Model {
         return secrets.getSecretSettings();
     }
 
+    public String genAiSystem() {
+        return "unknown";
+    }
+
+    public String genAiOperation() {
+        return "unknown";
+    }
+
+    public String genAiRequestModel() {
+        return "unknown";
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -50,7 +50,7 @@ public class OpenAiActionCreator implements OpenAiActionVisitor {
     @Override
     public ExecutableAction create(OpenAiChatCompletionModel model, Map<String, Object> taskSettings) {
         var overriddenModel = OpenAiChatCompletionModel.of(model, taskSettings);
-        var requestCreator = OpenAiCompletionRequestManager.of(overriddenModel, serviceComponents.threadPool());
+        var requestCreator = OpenAiCompletionRequestManager.of(overriddenModel, serviceComponents.threadPool(), serviceComponents.tracer());
         var errorMessage = constructFailedToSendRequestMessage(overriddenModel.getServiceSettings().uri(), COMPLETION_ERROR_PREFIX);
         return new SingleInputSenderExecutableAction(sender, requestCreator, errorMessage, COMPLETION_ERROR_PREFIX);
     }

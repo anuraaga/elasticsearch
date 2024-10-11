@@ -11,6 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.inference.InferenceServiceResults;
+import org.elasticsearch.telemetry.tracing.Tracer;
 import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.xpack.inference.external.http.retry.RequestSender;
 import org.elasticsearch.xpack.inference.external.http.retry.ResponseHandler;
@@ -22,21 +23,26 @@ import org.elasticsearch.xpack.inference.services.openai.completion.OpenAiChatCo
 import java.util.Objects;
 import java.util.function.Supplier;
 
+import software.amazon.awssdk.services.bedrockruntime.model.Trace;
+
 public class OpenAiCompletionRequestManager extends OpenAiRequestManager {
 
     private static final Logger logger = LogManager.getLogger(OpenAiCompletionRequestManager.class);
 
     private static final ResponseHandler HANDLER = createCompletionHandler();
 
-    public static OpenAiCompletionRequestManager of(OpenAiChatCompletionModel model, ThreadPool threadPool) {
-        return new OpenAiCompletionRequestManager(Objects.requireNonNull(model), Objects.requireNonNull(threadPool));
+    public static OpenAiCompletionRequestManager of(OpenAiChatCompletionModel model, ThreadPool threadPool, Tracer tracer) {
+        return new OpenAiCompletionRequestManager(Objects.requireNonNull(model), Objects.requireNonNull(threadPool),
+                                                  Objects.requireNonNull(tracer));
     }
 
     private final OpenAiChatCompletionModel model;
+    private final Tracer tracer;
 
-    private OpenAiCompletionRequestManager(OpenAiChatCompletionModel model, ThreadPool threadPool) {
+    private OpenAiCompletionRequestManager(OpenAiChatCompletionModel model, ThreadPool threadPool, Tracer tracer) {
         super(threadPool, model, OpenAiChatCompletionRequest::buildDefaultUri);
         this.model = Objects.requireNonNull(model);
+        this.tracer = Objects.requireNonNull(tracer);;
     }
 
     @Override

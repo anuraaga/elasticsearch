@@ -19,6 +19,8 @@ import org.elasticsearch.xpack.inference.services.settings.DefaultSecretSettings
 
 import java.util.Map;
 
+import io.opentelemetry.semconv.incubating.GenAiIncubatingAttributes.GenAiOperationNameValues;
+
 public class OpenAiChatCompletionModel extends OpenAiModel {
 
     public static OpenAiChatCompletionModel of(OpenAiChatCompletionModel model, Map<String, Object> taskSettings) {
@@ -82,6 +84,16 @@ public class OpenAiChatCompletionModel extends OpenAiModel {
     @Override
     public DefaultSecretSettings getSecretSettings() {
         return (DefaultSecretSettings) super.getSecretSettings();
+    }
+
+    @Override
+    public String genAiOperation() {
+        return GenAiOperationNameValues.CHAT;
+    }
+
+    @Override
+    public String genAiRequestModel() {
+        return getServiceSettings().modelId();
     }
 
     @Override

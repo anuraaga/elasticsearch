@@ -8,6 +8,11 @@
 package org.elasticsearch.xpack.inference.external.request;
 
 import java.net.URI;
+import java.util.Collections;
+import java.util.Map;
+
+import org.elasticsearch.core.Nullable;
+import org.elasticsearch.inference.Model;
 
 public interface Request {
     HttpRequest createHttpRequest();
@@ -38,5 +43,10 @@ public interface Request {
      */
     default boolean isStreaming() {
         return false;
+    }
+
+    @Nullable
+    default Model model2() {
+        return null;
     }
 }

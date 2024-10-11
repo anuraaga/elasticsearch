@@ -20,6 +20,7 @@ import org.elasticsearch.common.util.concurrent.EsExecutors;
 import org.elasticsearch.common.util.concurrent.UncategorizedExecutionException;
 import org.elasticsearch.core.TimeValue;
 import org.elasticsearch.inference.InferenceServiceResults;
+import org.elasticsearch.telemetry.tracing.Tracer;
 import org.elasticsearch.test.ESTestCase;
 import org.elasticsearch.threadpool.TestThreadPool;
 import org.elasticsearch.xpack.inference.external.http.HttpClient;
@@ -531,7 +532,8 @@ public class RetryingHttpSenderTests extends ESTestCase {
                 mock(ThrottlerManager.class),
                 createDefaultRetrySettings(),
                 threadPool,
-                EsExecutors.DIRECT_EXECUTOR_SERVICE
+                EsExecutors.DIRECT_EXECUTOR_SERVICE,
+                Tracer.NOOP
             );
 
             var listener = new PlainActionFuture<InferenceServiceResults>();
@@ -571,7 +573,8 @@ public class RetryingHttpSenderTests extends ESTestCase {
                 mock(ThrottlerManager.class),
                 createDefaultRetrySettings(),
                 threadPool,
-                EsExecutors.DIRECT_EXECUTOR_SERVICE
+                EsExecutors.DIRECT_EXECUTOR_SERVICE,
+                Tracer.NOOP
             );
 
             var listener = new PlainActionFuture<InferenceServiceResults>();
@@ -630,7 +633,8 @@ public class RetryingHttpSenderTests extends ESTestCase {
             mock(ThrottlerManager.class),
             createDefaultRetrySettings(),
             taskQueue.getThreadPool(),
-            EsExecutors.DIRECT_EXECUTOR_SERVICE
+            EsExecutors.DIRECT_EXECUTOR_SERVICE,
+            Tracer.NOOP
         );
     }
 
