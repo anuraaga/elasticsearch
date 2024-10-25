@@ -10,6 +10,7 @@
 ################################################################################
 
 FROM ubuntu:20.04 AS builder
+ARG TARGETARCH
 
 # Install required packages to extract the Elasticsearch distribution
 
@@ -43,7 +44,7 @@ RUN set -eux ; \
 RUN mkdir /usr/share/elasticsearch
 WORKDIR /usr/share/elasticsearch
 
-COPY --chown=0:0 distribution/archives/linux-aarch64-tar/build/install/elasticsearch-8.16.0-SNAPSHOT /usr/share/elasticsearch
+COPY --chown=0:0 distribution/archives/linux-${TARGETARCH}-tar/build/install/elasticsearch-8.16.0-SNAPSHOT /usr/share/elasticsearch
 
 # The distribution includes a `config` directory, no need to create it
 COPY docker/config/elasticsearch.yml config/
