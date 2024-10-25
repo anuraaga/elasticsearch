@@ -34,7 +34,7 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: 21
+          java-version: 17
       - uses: gradle/actions/setup-gradle@v3
       - run: ./gradlew :distribution:archives:linux-tar:assemble :distribution:archives:linux-aarch64-tar:assemble
       - run: |
