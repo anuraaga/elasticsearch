@@ -8,6 +8,8 @@
 package org.elasticsearch.xpack.inference.external.http.sender;
 
 import org.elasticsearch.action.ActionListener;
+import org.elasticsearch.common.util.concurrent.ThreadContext;
+import org.elasticsearch.common.util.concurrent.ThreadContext.StoredContext;
 import org.elasticsearch.inference.InferenceServiceResults;
 
 import java.util.function.Supplier;
@@ -41,4 +43,6 @@ public interface InferenceRequest {
      * Returns a {@link Supplier} to determine if the request has completed.
      */
     Supplier<Boolean> getRequestCompletedFunction();
+
+    Supplier<StoredContext> getStoredContext();
 }

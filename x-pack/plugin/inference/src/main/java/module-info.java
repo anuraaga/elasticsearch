@@ -28,6 +28,8 @@ module org.elasticsearch.inference {
     requires com.fasterxml.jackson.databind;
     requires org.joda.time;
     requires io.opentelemetry.semconv.incubating;
+    requires io.opentelemetry.api;
+    requires io.opentelemetry.context;
 
     exports org.elasticsearch.xpack.inference.action;
     exports org.elasticsearch.xpack.inference.registry;

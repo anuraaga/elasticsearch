@@ -23,8 +23,6 @@ import org.elasticsearch.xpack.inference.services.openai.completion.OpenAiChatCo
 import java.util.Objects;
 import java.util.function.Supplier;
 
-import software.amazon.awssdk.services.bedrockruntime.model.Trace;
-
 public class OpenAiCompletionRequestManager extends OpenAiRequestManager {
 
     private static final Logger logger = LogManager.getLogger(OpenAiCompletionRequestManager.class);

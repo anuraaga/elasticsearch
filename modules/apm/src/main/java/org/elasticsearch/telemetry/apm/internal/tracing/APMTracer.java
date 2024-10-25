@@ -251,8 +251,8 @@ public class APMTracer extends AbstractLifecycleComponent implements org.elastic
                     traceContextMap.put(Task.TRACE_STATE, traceStateHeader);
                 }
                 parentContext = services.openTelemetry.getPropagators()
-                    .getTextMapPropagator()
-                    .extract(Context.current(), traceContextMap, new MapKeyGetter());
+                                                      .getTextMapPropagator()
+                                                      .extract(Context.current(), traceContextMap, new MapKeyGetter());
             }
         }
         return parentContext;

@@ -11,6 +11,7 @@ import org.elasticsearch.ElasticsearchTimeoutException;
 import org.elasticsearch.action.ActionListener;
 import org.elasticsearch.action.support.ListenerTimeouts;
 import org.elasticsearch.common.Strings;
+import org.elasticsearch.common.util.concurrent.ThreadContext.StoredContext;
 import org.elasticsearch.core.Nullable;
 import org.elasticsearch.core.TimeValue;
 import org.elasticsearch.inference.InferenceServiceResults;
@@ -29,6 +30,8 @@ class RequestTask implements RejectableTask {
     private final InferenceInputs inferenceInputs;
     private final ActionListener<InferenceServiceResults> listener;
 
+    private final Supplier<StoredContext> storedContext;
+
     RequestTask(
         RequestManager requestCreator,
         InferenceInputs inferenceInputs,
@@ -39,6 +42,8 @@ class RequestTask implements RejectableTask {
         this.requestCreator = Objects.requireNonNull(requestCreator);
         this.listener = getListener(Objects.requireNonNull(listener), timeout, Objects.requireNonNull(threadPool));
         this.inferenceInputs = Objects.requireNonNull(inferenceInputs);
+
+        this.storedContext = threadPool.getThreadContext().newRestorableContext(false);
     }
 
     private ActionListener<InferenceServiceResults> getListener(
@@ -77,6 +82,11 @@ class RequestTask implements RejectableTask {
     @Override
     public Supplier<Boolean> getRequestCompletedFunction() {
         return this::hasCompleted;
+    }
+
+    @Override
+    public Supplier<StoredContext> getStoredContext() {
+        return storedContext;
     }
 
     @Override

@@ -412,8 +412,10 @@ class RequestExecutorService implements RequestExecutor {
             var reserveRes = rateLimiter.reserve(1);
             assert shouldExecuteImmediately(reserveRes) : "Reserving request tokens required a sleep when it should not have";
 
-            task.getRequestManager()
-                .execute(task.getInferenceInputs(), requestSender, task.getRequestCompletedFunction(), task.getListener());
+            try (var ignore = task.getStoredContext().get()) {
+                task.getRequestManager()
+                    .execute(task.getInferenceInputs(), requestSender, task.getRequestCompletedFunction(), task.getListener());
+            }
             return EXECUTED_A_TASK;
         }
 

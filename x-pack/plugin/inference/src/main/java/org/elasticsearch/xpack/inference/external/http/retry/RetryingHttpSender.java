@@ -222,6 +222,11 @@ public class RetryingHttpSender implements RequestSender {
         return tracer;
     }
 
+    @Override
+    public ThreadPool threadPool() {
+        return threadPool;
+    }
+
     private void logException(Logger logger, Request request, String requestType, Exception exception) {
         var causeException = ExceptionsHelper.unwrapCause(exception);
 

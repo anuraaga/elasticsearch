@@ -139,7 +139,7 @@ public interface Tracer {
      * @return a scope. You MUST close it when you are finished with it.
      */
     Releasable withScope(Traceable traceable);
-
+    
     /**
      * A Tracer implementation that does nothing. This is used when no tracer is configured,
      * in order to avoid null checks everywhere.
