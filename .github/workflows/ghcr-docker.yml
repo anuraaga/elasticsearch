@@ -40,8 +40,6 @@ jobs:
       - run: |
           mv distribution/archives/linux-tar distribution/archives/linux-amd64-tar
           mv distribution/archives/linux-aarch64-tar distribution/archives/linux-arm64-tar
-          ls distribution/archives
-          ls distribution/archives/**
       - uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64,linux/arm64
